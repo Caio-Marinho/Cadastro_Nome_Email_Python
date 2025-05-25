@@ -25,7 +25,7 @@ class Contato(BaseModel):
     - email: O e-mail do contato.
     """
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))  # Gera um ID único
-    nome: int
+    nome: str
     email: EmailStr
 
     def Config():
@@ -34,7 +34,7 @@ class Contato(BaseModel):
     @validator("nome")
     def validar_nome(cls, nome):
         tipo_nome = type(nome).__name__
-        if not isinstance(nome, int):
+        if not isinstance(nome, str):
             raise TypeError(f"O campo 'nome' deve ser uma string, mas recebeu {tipo_nome}.")
         return nome
 
@@ -113,7 +113,7 @@ def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[
         for erro in e.errors():
             campo = erro['loc'][0]
             tipo = erro['type']
-            msg = erro['msg']
+            msg = GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
 
             print(f"Erro no campo '{campo}': {msg}")
 
