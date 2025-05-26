@@ -96,7 +96,7 @@ def gerar_email_unico(nome: str, dominios: List[str], emails_existentes: Set[str
     return email
 
 
-def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[str]) -> Contato:
+def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[str]) -> Contato | None:
     """
     Cria um contato com nome aleatório e e-mail único.
 
@@ -235,7 +235,7 @@ def exportar_para_json(contatos: List[Contato], caminho_arquivo: Path) -> None:
     Retorna:
     - None
     """
-    contatos_dict: List[Dict[str, str]] = [vars(contato) for contato in contatos]  # Converte os contatos para dicionários
+    contatos_dict: List[Dict[str, str]] = [contato.model_dump(by_alias=False) for contato in contatos]  # Converte os contatos para dicionários
 
     with open(caminho_arquivo, 'w', encoding='utf-8') as arquivo:
         json.dump(contatos_dict, arquivo, ensure_ascii=False, indent=4)  # Escreve os dados no arquivo JSON
@@ -252,6 +252,10 @@ def carregar_json(caminho_arquivo: Path) -> List[Contato]:
 
     Retorna:
     - Uma lista de objetos `Contato`, onde cada objeto pode ser acessado por atributos.
+
+    Erros:
+    - FileNotFoundError: Se o arquivo não existir.
+    - ValidationError: Se os dados JSON não corresponderem ao modelo `Contato`.
     """
     if os.path.getsize(caminho_arquivo) == 0:
         # Arquivo vazio: retorna lista vazia ou trata como quiser
