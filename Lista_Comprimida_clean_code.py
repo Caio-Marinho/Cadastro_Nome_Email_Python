@@ -12,7 +12,7 @@ NOMES: List[str] = [
         "Ana Silva", "Pedro Souza", "Maria Oliveira", "João Santos", "Carla Pereira",
         "Lucas Rodrigues", "Fernanda Lima", "Ricardo Costa", "Juliana Gomes", "Bruno Fernandes"
     ]
-CAMINHO_ARQUIVO: Path = Path("Downloads/contatos.json")
+CAMINHO_ARQUIVO: Path = Path("contatos.json")
 
 
 class Contato(BaseModel):
