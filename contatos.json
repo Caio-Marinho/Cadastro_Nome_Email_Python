@@ -1,0 +1,52 @@
+[
+    {
+        "id": "a9d66b64-b6f7-4de2-9d32-d285e6b5fd21",
+        "nome": "Bruno Fernandes",
+        "email": "bruno.fernandes@gmail.com"
+    },
+    {
+        "id": "c63feba9-86ce-4eb3-ba54-c9be57ebb314",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@gmail.com"
+    },
+    {
+        "id": "cf230cdf-ae3a-4d1c-bb82-0f2aebce644f",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@hotmail.com"
+    },
+    {
+        "id": "389dc6c9-61b6-4d3f-9016-d25ad8e62892",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@outlook.com"
+    },
+    {
+        "id": "97ad4a3b-b678-464a-bc2c-266af8c28c5f",
+        "nome": "Carla Pereira",
+        "email": "carla.pereira@outlook.com"
+    },
+    {
+        "id": "969e8858-9915-4378-9eb4-c25645c11e5c",
+        "nome": "Ana Silva",
+        "email": "ana.silva@yahoo.com.br"
+    },
+    {
+        "id": "18c99b2c-f79a-4c2e-8fa7-f06110379cc0",
+        "nome": "Carla Pereira",
+        "email": "carla.pereira@hotmail.com"
+    },
+    {
+        "id": "c0598d70-a1b6-4322-a29c-71ed76d4dcf2",
+        "nome": "João Santos",
+        "email": "joão.santos@hotmail.com"
+    },
+    {
+        "id": "ddc8e7c0-ae5c-4664-aa89-325da6664fec",
+        "nome": "João Santos",
+        "email": "joão.santos@outlook.com"
+    },
+    {
+        "id": "da9266e0-6dce-4e0f-a63e-9c72378f17fe",
+        "nome": "João Santos",
+        "email": "joão.santos1@hotmail.com"
+    }
+]

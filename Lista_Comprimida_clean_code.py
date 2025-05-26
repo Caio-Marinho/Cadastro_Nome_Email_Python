@@ -1,10 +1,11 @@
+import os
 import random
 import json
 import uuid
 from deep_translator import GoogleTranslator
 from pathlib import Path
 from typing import List, Set, Dict, Union
-from pydantic import BaseModel,Field ,EmailStr,validator, ValidationError
+from pydantic import BaseModel,Field ,EmailStr,StrictStr,field_validator, ValidationError,validate_call
 
 # Constantes de Domínios e Caminho do Arquivo e Nomes
 DOMINIOS_VALIDOS: List[str] = ["gmail.com", "hotmail.com", "yahoo.com.br", "outlook.com"]
@@ -24,21 +25,23 @@ class Contato(BaseModel):
     - nome: O nome do contato.
     - email: O e-mail do contato.
     """
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))  # Gera um ID único
-    nome: str
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()),alias='contato_id')  # Gera um ID único
+    nome: StrictStr
     email: EmailStr
 
-    def Config():
-        struct = True
+    model_config = {
+        "strict":True,
+        "populate_by_name":True
+    }
     
-    @validator("nome")
+    @field_validator("nome")
     def validar_nome(cls, nome):
         tipo_nome = type(nome).__name__
         if not isinstance(nome, str):
             raise TypeError(f"O campo 'nome' deve ser uma string, mas recebeu {tipo_nome}.")
         return nome
 
-    @validator("email")
+    @field_validator("email")
     def validar_email(cls, email):
         tipo_email = type(email).__name__
         if not isinstance(email, str):
@@ -159,7 +162,7 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato
     - A lista de contatos atualizada, com o contato removido, se encontrado.
     """
     # Filtra os contatos cujo nome contenha o texto informado
-    encontrados = filtrar_por_nome(contatos, nome)
+    encontrados:List[Contato] = filtrar_por_nome(contatos, nome)
 
     # Se não encontrar nenhum contato com esse nome
     if not encontrados:
@@ -180,7 +183,7 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato
     email = input("Digite o e-mail exato do contato que deseja remover: ").strip().lower()
 
     # Procura o contato com o e-mail informado
-    contato_para_remover = next(
+    contato_para_remover:Contato | None = next(
         (contato for contato in encontrados if contato.email.lower() == email), None)
 
     # Se encontrar o contato com o e-mail informado, remove da lista
@@ -204,7 +207,7 @@ def ordenar_por_nome(contatos: List[Contato]) -> List[Contato]:
     """
     return sorted(contatos, key=lambda contato: contato.nome)  # Ordena os contatos pelo nome
 
-
+@validate_call
 def exibir_contatos(titulo: str, contatos: List[Contato]) -> None:
     """
     Exibe os contatos no terminal com título.
@@ -250,6 +253,9 @@ def carregar_json(caminho_arquivo: Path) -> List[Contato]:
     Retorna:
     - Uma lista de objetos `Contato`, onde cada objeto pode ser acessado por atributos.
     """
+    if os.path.getsize(caminho_arquivo) == 0:
+        # Arquivo vazio: retorna lista vazia ou trata como quiser
+        return []
     with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
         dados: List[Dict[str, str]] = json.load(arquivo)  # Carrega os dados do arquivo JSON
         return [Contato(**dado) for dado in dados]  # Converte os dados para objetos
@@ -307,7 +313,11 @@ def main() -> None:
 
                 case 4:
                     if contatos:
-                        exibir_contatos("Contatos Gerados:", contatos)
+                        try:
+                            exibir_contatos("Contatos Gerados:", contatos)
+                        except ValidationError as e:
+                            for erro in e.errors():
+                                print(GoogleTranslator(source='auto', target='pt').translate(erro['msg']))
                     else:
                         print("Nenhum contato gerado. Por favor, gere contatos primeiro.")
 
