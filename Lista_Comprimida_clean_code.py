@@ -9,10 +9,10 @@ from pydantic import BaseModel, Field, EmailStr, StrictStr, field_validator, Val
 
 # Constantes de Domínios e Caminho do Arquivo e Nomes
 DOMINIOS_VALIDOS: List[str] = ["gmail.com",
-    "hotmail.com", "yahoo.com.br", "outlook.com"]
+                               "hotmail.com", "yahoo.com.br", "outlook.com"]
 NOMES: List[str] = [
     "Ana Silva", "Pedro Souza", "Maria Oliveira", "João Santos", "Carla Pereira",
-        "Lucas Rodrigues", "Fernanda Lima", "Ricardo Costa", "Juliana Gomes", "Bruno Fernandes"
+    "Lucas Rodrigues", "Fernanda Lima", "Ricardo Costa", "Juliana Gomes", "Bruno Fernandes"
 ]
 CAMINHO_ARQUIVO: Path = Path("contatos.json")
 
@@ -353,82 +353,91 @@ def main() -> None:
                             print(f"Erro no campo '{campo}': {msg}")
 
                 case 2:
-                        try:
-                            # Solicita o nome a ser buscado
-                            termo_busca: str = input(
-                                "Digite o nome a ser buscado: ").strip().lower()
-                            contatos_filtrados: List[Contato] = ordenar_por_nome(
-                                # Filtra e ordena
-                                filtrar_por_nome(contatos, termo_busca))
-                            exibir_contatos(
-                                f"Contatos filtrados por '{termo_busca}':", contatos_filtrados)
-                        except ValidationError as e:
-                            for erro in e.errors():
-                                campo = erro['loc'][0]
-                                tipo = erro['type']
-                                msg =  GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
-                                print(f"Erro no campo '{campo}': {msg}")
+                    try:
+                        # Solicita o nome a ser buscado
+                        termo_busca: str = input(
+                            "Digite o nome a ser buscado: ").strip().lower()
+                        contatos_filtrados: List[Contato] = ordenar_por_nome(
+                            # Filtra e ordena
+                            filtrar_por_nome(contatos, termo_busca))
+                        exibir_contatos(
+                            f"Contatos filtrados por '{termo_busca}':", contatos_filtrados)
+                    except ValidationError as e:
+                        for erro in e.errors():
+                            campo = erro['loc'][0]
+                            tipo = erro['type']
+                            msg = GoogleTranslator(
+                                source='auto', target='pt').translate(erro['msg'])
+                            print(f"Erro no campo '{campo}': {msg}")
 
                 case 3:
+                    try:
+                        contatos = ordenar_por_nome(
+                            contatos)  # Ordena os contatos
+                        exibir_contatos("Contatos Ordenados:", contatos)
+                    except ValidationError as e:
+                        for erro in e.errors():
+                            campo = erro['loc'][0]
+                            tipo = erro['type']
+                            msg = GoogleTranslator(
+                                source='auto', target='pt').translate(erro['msg'])
+                            print(f"Erro no campo '{campo}': {msg}")
+
+                case 4:
+                    if contatos:
                         try:
-                            contatos = ordenar_por_nome(contatos)  # Ordena os contatos
-                            exibir_contatos("Contatos Ordenados:", contatos)
+                            exibir_contatos("Contatos Gerados:", contatos)
                         except ValidationError as e:
                             for erro in e.errors():
                                 campo = erro['loc'][0]
                                 tipo = erro['type']
-                                msg =  GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
+                                msg = GoogleTranslator(
+                                    source='auto', target='pt').translate(erro['msg'])
                                 print(f"Erro no campo '{campo}': {msg}")
-
-                case 4: 
-                        if contatos:
-                            try:
-                                exibir_contatos("Contatos Gerados:", contatos)
-                            except ValidationError as e:
-                                for erro in e.errors():
-                                    campo = erro['loc'][0]
-                                    tipo = erro['type']
-                                    msg =  GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
-                                    print(f"Erro no campo '{campo}': {msg}")
-                        else:
-                            print("Nenhum contato gerado. Por favor, gere contatos primeiro.")
+                    else:
+                        print(
+                            "Nenhum contato gerado. Por favor, gere contatos primeiro.")
 
                 case 5:
-                        try:
-                            # Exporta para JSON
-                            exportar_para_json(contatos, CAMINHO_ARQUIVO)
-                        except ValidationError as e:
-                            for erro in e.errors():
-                                campo = erro['loc'][0]
-                                tipo = erro['type']
-                                msg =  GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
-                                print(f"Erro no campo '{campo}': {msg}")
+                    try:
+                        # Exporta para JSON
+                        exportar_para_json(contatos, CAMINHO_ARQUIVO)
+                    except ValidationError as e:
+                        for erro in e.errors():
+                            campo = erro['loc'][0]
+                            tipo = erro['type']
+                            msg = GoogleTranslator(
+                                source='auto', target='pt').translate(erro['msg'])
+                            print(f"Erro no campo '{campo}': {msg}")
 
                 case 6:
-                        try:
-                            objetos_json: List[Contato] = carregar_json(
-                                CAMINHO_ARQUIVO)  # Carrega os contatos do JSON
-                            print("Contatos carregados do JSON:")
-                            list(map(lambda contato: print(
-                                f"ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}"), objetos_json))
-                        except FileNotFoundError:
-                            print("Arquivo não encontrado. Verifique o caminho e tente novamente.")
+                    try:
+                        objetos_json: List[Contato] = carregar_json(
+                            CAMINHO_ARQUIVO)  # Carrega os contatos do JSON
+                        print("Contatos carregados do JSON:")
+                        list(map(lambda contato: print(
+                            f"ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}"), objetos_json))
+                    except FileNotFoundError:
+                        print(
+                            "Arquivo não encontrado. Verifique o caminho e tente novamente.")
 
                 case 7:
-                        try:
-                            deletar_usuario = input(
-                                "Informe o contato que deseja deletar: ")
-                            contatos = deletar_usuario_por_nome(
-                                contatos, deletar_usuario)  # Deleta o contato
-                            # Atualiza o arquivo JSON
-                            exportar_para_json(contatos, CAMINHO_ARQUIVO)
-                            print(f"Contato '{deletar_usuario}' deletado com sucesso!")
-                        except ValidationError as e:
-                            for erro in e.errors():
-                                campo = erro['loc'][0]
-                                tipo = erro['type']
-                                msg =  GoogleTranslator(source='auto', target='pt').translate(erro['msg'])
-                                print(f"Erro no campo '{campo}': {msg}")
+                    try:
+                        deletar_usuario = input(
+                            "Informe o contato que deseja deletar: ")
+                        contatos = deletar_usuario_por_nome(
+                            contatos, deletar_usuario)  # Deleta o contato
+                        # Atualiza o arquivo JSON
+                        exportar_para_json(contatos, CAMINHO_ARQUIVO)
+                        print(
+                            f"Contato '{deletar_usuario}' deletado com sucesso!")
+                    except ValidationError as e:
+                        for erro in e.errors():
+                            campo = erro['loc'][0]
+                            tipo = erro['type']
+                            msg = GoogleTranslator(
+                                source='auto', target='pt').translate(erro['msg'])
+                            print(f"Erro no campo '{campo}': {msg}")
 
                 case 8:
                     print("Saindo...")
