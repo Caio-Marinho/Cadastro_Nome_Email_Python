@@ -37,7 +37,7 @@ class Contato(BaseModel):
     }
 
     @field_validator("nome")
-    def validar_nome(cls, nome):
+    def validar_nome(cls, nome:str):
         tipo_nome = type(nome).__name__
         if not isinstance(nome, str):
             raise TypeError(
@@ -45,7 +45,7 @@ class Contato(BaseModel):
         return nome
 
     @field_validator("email")
-    def validar_email(cls, email):
+    def validar_email(cls, email:EmailStr):
         tipo_email = type(email).__name__
         if not isinstance(email, str):
             raise TypeError(
