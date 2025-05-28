@@ -249,7 +249,7 @@ def exibir_contatos(titulo: str, contatos: List[Contato]) -> None:
 
 
 @validate_call
-def exportar_para_json(contatos: List[Contato], caminho_arquivo: Path) -> None:
+def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path|str]) -> None:
     """
     Exporta a lista de contatos para um arquivo JSON.
 
@@ -272,7 +272,7 @@ def exportar_para_json(contatos: List[Contato], caminho_arquivo: Path) -> None:
 
 
 @validate_call
-def carregar_json(caminho_arquivo: Path) -> List[Contato] | List:
+def carregar_json(caminho_arquivo: Union[Path|str]) -> List[Contato] | List:
     """
     Carrega um arquivo JSON e converte em objetos com acesso por atributos.
 

@@ -1,47 +1,42 @@
 [
     {
-        "id": "783ad98b-271e-415e-b848-ce1d1a3d2f8e",
-        "nome": "Carla Pereira",
-        "email": "carla.pereira@outlook.com"
-    },
-    {
-        "id": "aa0b9a5a-04aa-44a4-8efa-19c2ec21a49a",
-        "nome": "Carla Pereira",
-        "email": "carla.pereira@outlook.com"
-    },
-    {
-        "id": "9e19e1b3-2600-46a5-b98d-eb4276a8b3ff",
+        "id": "a5ff9ef7-3a57-4aa5-bfa6-d91727f25c3a",
         "nome": "Fernanda Lima",
         "email": "fernanda.lima@yahoo.com.br"
     },
     {
-        "id": "d5e18f5c-cf8e-467f-9e5d-4c0a5d7a36e7",
+        "id": "967c988b-509e-466a-9bdb-98198a29e8fb",
+        "nome": "João Santos",
+        "email": "joão.santos@gmail.com"
+    },
+    {
+        "id": "f84459d5-8b49-4edd-84cb-c00031160433",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@yahoo.com.br"
+    },
+    {
+        "id": "a8168a17-4354-45b3-b929-676476aa233d",
+        "nome": "Ana Silva",
+        "email": "ana.silva@gmail.com"
+    },
+    {
+        "id": "b37c5a9b-d8b0-41de-8098-953bfaef4aa8",
+        "nome": "Bruno Fernandes",
+        "email": "bruno.fernandes@yahoo.com.br"
+    },
+    {
+        "id": "6cb71f6f-cbed-4121-8962-6f55a0b1d470",
+        "nome": "Carla Pereira",
+        "email": "carla.pereira@yahoo.com.br"
+    },
+    {
+        "id": "1b78f50f-f532-41d2-85b8-00ada3de643e",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@hotmail.com"
+    },
+    {
+        "id": "3ac18972-3fb4-4713-b83a-63e5d8bcfbb5",
         "nome": "Lucas Rodrigues",
         "email": "lucas.rodrigues@gmail.com"
-    },
-    {
-        "id": "893e0f08-9b8e-42ba-bba4-5c0e092ef315",
-        "nome": "Lucas Rodrigues",
-        "email": "lucas.rodrigues@hotmail.com"
-    },
-    {
-        "id": "45b9a95c-fdcb-459b-a609-9cc79cbc5a93",
-        "nome": "Pedro Souza",
-        "email": "pedro.souza@hotmail.com"
-    },
-    {
-        "id": "22387fb4-a3d4-498a-bf25-723a9149306e",
-        "nome": "Pedro Souza",
-        "email": "pedro.souza@gmail.com"
-    },
-    {
-        "id": "e56f1ed3-1d80-4821-b650-9296debad8f4",
-        "nome": "Ricardo Costa",
-        "email": "ricardo.costa@outlook.com"
-    },
-    {
-        "id": "56c95f92-6310-494e-940d-ed488e2655aa",
-        "nome": "Ricardo Costa",
-        "email": "ricardo.costa@yahoo.com.br"
     }
 ]
