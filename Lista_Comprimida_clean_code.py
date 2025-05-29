@@ -36,8 +36,8 @@ class Contato(BaseModel):
         "populate_by_name": True
     }
 
-    @field_validator("email",mode="after")
-    def validar_email(cls, email:EmailStr):
+    @field_validator("email", mode="after")
+    def validar_email(cls, email: EmailStr):
         dominio = email.split('@')[-1]
         if dominio not in DOMINIOS_VALIDOS:
             raise ValueError(
@@ -124,7 +124,7 @@ def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[
 
 
 @validate_call
-def gerar_contatos(quantidade: int, nomes: List[str], dominios_validos: List[str]) -> List[Contato]:
+def gerar_contatos(quantidade: int, nomes: List[str] = NOMES, dominios_validos: List[str] = DOMINIOS_VALIDOS) -> List[Contato]:
     """
     Gera uma lista de contatos únicos.
 
@@ -237,7 +237,7 @@ def exibir_contatos(titulo: str, contatos: List[Contato]) -> None:
 
 
 @validate_call
-def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path|str]) -> None:
+def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> None:
     """
     Exporta a lista de contatos para um arquivo JSON.
 
@@ -260,7 +260,7 @@ def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path|str]
 
 
 @validate_call
-def carregar_json(caminho_arquivo: Union[Path|str]) -> List[Contato] | List:
+def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[List[Contato], List]:
     """
     Carrega um arquivo JSON e converte em objetos com acesso por atributos.
 
@@ -330,7 +330,7 @@ def main() -> None:
                         quantidade: int = int(
                             input("Quantos contatos deseja gerar? ").strip())
                         contatos = gerar_contatos(
-                            quantidade, NOMES, DOMINIOS_VALIDOS)  # Gera os contatos
+                            quantidade)  # Gera os contatos
                         print(f"{quantidade} contatos gerados com sucesso!")
                     except ValidationError as e:
                         for erro in e.errors():
@@ -389,7 +389,7 @@ def main() -> None:
                 case 5:
                     try:
                         # Exporta para JSON
-                        exportar_para_json(contatos, CAMINHO_ARQUIVO)
+                        exportar_para_json(contatos)
                     except ValidationError as e:
                         for erro in e.errors():
                             campo = erro['loc'][0]
@@ -400,8 +400,8 @@ def main() -> None:
 
                 case 6:
                     try:
-                        objetos_json: List[Contato] = carregar_json(
-                            CAMINHO_ARQUIVO)  # Carrega os contatos do JSON
+                        # Carrega os contatos do JSON
+                        objetos_json: List[Contato] = carregar_json()
                         print("Contatos carregados do JSON:")
                         list(map(lambda contato: print(
                             f"ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}"), objetos_json))
@@ -416,7 +416,7 @@ def main() -> None:
                         contatos = deletar_usuario_por_nome(
                             contatos, deletar_usuario)  # Deleta o contato
                         # Atualiza o arquivo JSON
-                        exportar_para_json(contatos, CAMINHO_ARQUIVO)
+                        exportar_para_json(contatos)
                         print(
                             f"Contato '{deletar_usuario}' deletado com sucesso!")
                     except ValidationError as e:
