@@ -1,7 +1,7 @@
 import os
 import random
 import json
-import uuid
+from uuid import uuid4
 from deep_translator import GoogleTranslator
 from pathlib import Path
 from typing import List, Set, Dict, Union
@@ -26,7 +26,7 @@ class Contato(BaseModel):
     - nome: O nome do contato.
     - email: O e-mail do contato.
     """
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()),
+    id: str = Field(default_factory=lambda: str(uuid4()),
                     alias='contato_id')  # Gera um ID único
     nome: StrictStr
     email: EmailStr
