@@ -36,20 +36,8 @@ class Contato(BaseModel):
         "populate_by_name": True
     }
 
-    @field_validator("nome")
-    def validar_nome(cls, nome:str):
-        tipo_nome = type(nome).__name__
-        if not isinstance(nome, str):
-            raise TypeError(
-                f"O campo 'nome' deve ser uma string, mas recebeu {tipo_nome}.")
-        return nome
-
-    @field_validator("email")
+    @field_validator("email",mode="after")
     def validar_email(cls, email:EmailStr):
-        tipo_email = type(email).__name__
-        if not isinstance(email, str):
-            raise TypeError(
-                f"O campo 'email' deve ser uma string, mas recebeu {tipo_email}.")
         dominio = email.split('@')[-1]
         if dominio not in DOMINIOS_VALIDOS:
             raise ValueError(
