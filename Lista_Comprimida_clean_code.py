@@ -36,6 +36,10 @@ class Contato(BaseModel):
         "populate_by_name": True
     }
 
+    def __init__(self, **data):
+        super().__init__(**data)
+
+
     @field_validator("email", mode="after")
     def validar_email(cls, email: EmailStr):
         dominio = email.split('@')[-1]
@@ -334,7 +338,6 @@ def main() -> None:
                             input("Quantos contatos deseja gerar? ").strip())
                         contatos = gerar_contatos(
                             quantidade)  # Gera os contatos
-                        print(contatos)
                         print(f"{quantidade} contatos gerados com sucesso!")
                     except ValidationError as e:
                         exibir_erros_validacao(e.errors())

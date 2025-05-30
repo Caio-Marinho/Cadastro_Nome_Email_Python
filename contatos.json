@@ -1,42 +1,52 @@
 [
     {
-        "id": "a5ff9ef7-3a57-4aa5-bfa6-d91727f25c3a",
-        "nome": "Fernanda Lima",
-        "email": "fernanda.lima@yahoo.com.br"
-    },
-    {
-        "id": "967c988b-509e-466a-9bdb-98198a29e8fb",
+        "id": "e4f70c4f-461b-4a79-920c-e46b69b22d7a",
         "nome": "João Santos",
-        "email": "joão.santos@gmail.com"
+        "email": "joão.santos@hotmail.com"
     },
     {
-        "id": "f84459d5-8b49-4edd-84cb-c00031160433",
-        "nome": "Fernanda Lima",
-        "email": "fernanda.lima@yahoo.com.br"
+        "id": "cd61e315-d5ca-42bf-a450-122ab8d6a6b4",
+        "nome": "Carla Pereira",
+        "email": "carla.pereira@hotmail.com"
     },
     {
-        "id": "a8168a17-4354-45b3-b929-676476aa233d",
+        "id": "1eebb2d6-d853-4e14-a29b-d02be464c524",
         "nome": "Ana Silva",
         "email": "ana.silva@gmail.com"
     },
     {
-        "id": "b37c5a9b-d8b0-41de-8098-953bfaef4aa8",
-        "nome": "Bruno Fernandes",
-        "email": "bruno.fernandes@yahoo.com.br"
+        "id": "a74c7801-38da-412b-ac13-5a348f376696",
+        "nome": "Ana Silva",
+        "email": "ana.silva@gmail.com"
     },
     {
-        "id": "6cb71f6f-cbed-4121-8962-6f55a0b1d470",
+        "id": "970c2f9e-e7ad-45e2-8003-c8f801b2477a",
+        "nome": "Fernanda Lima",
+        "email": "fernanda.lima@yahoo.com.br"
+    },
+    {
+        "id": "870eba07-6cee-4503-a289-54ff373c1aec",
+        "nome": "Maria Oliveira",
+        "email": "maria.oliveira@gmail.com"
+    },
+    {
+        "id": "d9fd180d-0587-4bfd-9499-7aeb034216e0",
+        "nome": "Pedro Souza",
+        "email": "pedro.souza@gmail.com"
+    },
+    {
+        "id": "0957e89e-e894-471c-9dc1-949d8051b017",
+        "nome": "Pedro Souza",
+        "email": "pedro.souza@yahoo.com.br"
+    },
+    {
+        "id": "e51f3254-eb3e-493a-b5f1-8fbd6a097d96",
         "nome": "Carla Pereira",
         "email": "carla.pereira@yahoo.com.br"
     },
     {
-        "id": "1b78f50f-f532-41d2-85b8-00ada3de643e",
-        "nome": "Fernanda Lima",
-        "email": "fernanda.lima@hotmail.com"
-    },
-    {
-        "id": "3ac18972-3fb4-4713-b83a-63e5d8bcfbb5",
-        "nome": "Lucas Rodrigues",
-        "email": "lucas.rodrigues@gmail.com"
+        "id": "848ca84e-a261-41b0-9eb7-0e14073e3b94",
+        "nome": "Bruno Fernandes",
+        "email": "bruno.fernandes@gmail.com"
     }
 ]
