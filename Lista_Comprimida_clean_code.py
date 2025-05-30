@@ -95,7 +95,7 @@ def gerar_email_unico(nome: str, dominios: List[str], emails_existentes: Set[str
 
 
 @validate_call
-def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[str]) -> Contato | None:
+def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[str]) -> Contato:
     """
     Cria um contato com nome aleatório e e-mail único.
 
@@ -110,17 +110,8 @@ def criar_contato(nomes: List[str], dominios: List[str], emails_existentes: Set[
     nome: str = random.choice(nomes)  # Escolhe um nome aleatório
     email: str = gerar_email_unico(
         nome, dominios, emails_existentes)  # Gera um e-mail único
-    try:
-        # Retorna um novo objeto Contato
-        return Contato(nome=nome, email=email)
-    except ValidationError as e:
-        for erro in e.errors():
-            campo = erro['loc'][0]
-            tipo = erro['type']
-            msg = GoogleTranslator(
-                source='auto', target='pt').translate(erro['msg'])
-
-            print(f"Erro no campo '{campo}': {msg}")
+    # Retorna um novo objeto Contato
+    return Contato(nome=nome, email=email)
 
 
 @validate_call
@@ -221,7 +212,7 @@ def ordenar_por_nome(contatos: List[Contato]) -> List[Contato]:
 @validate_call
 def exibir_contatos(titulo: str, contatos: List[Contato]) -> None:
     """
-    Exibe os contatos no terminal com título.
+    procedimento de Exibição dos contatos no terminal com título.
 
     Parâmetros:
     - titulo: Título a ser exibido antes da lista de contatos.
@@ -239,7 +230,7 @@ def exibir_contatos(titulo: str, contatos: List[Contato]) -> None:
 @validate_call
 def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> None:
     """
-    Exporta a lista de contatos para um arquivo JSON.
+    Procedimento de Exportação da lista de contatos para um arquivo JSON.
 
     Parâmetros:
     - contatos: Lista de objetos `Contato` a ser exportada.
@@ -284,9 +275,26 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
         return [Contato(**dado) for dado in dados]
 
 
+def exibir_erros_validacao(erros) -> None:
+    """
+    Procedimento responsavel por exibir a mensagem de erro do Pydantic
+
+    Parametro:
+    - erros: Erros encontrados no processo de validação
+
+    Retorno:
+    - None
+    """
+    for erro in erros:
+        campo = erro['loc'][0]
+        msg = GoogleTranslator(
+            source='auto', target='pt').translate(erro['msg'])
+        print(f"Erro no campo '{campo}': {','.join(msg.split(',')[1:]) if ',' in msg else msg}")
+
+
 def main() -> None:
     """
-    Exibe o menu de opções para o usuário e executa a ação escolhida.
+    Procedimento de Exibição do menu de opções para o usuário e executa a ação escolhida.
 
     Parâmetros:
     - Nenhum
@@ -302,12 +310,7 @@ def main() -> None:
         # Cria uma lista vazia se o arquivo não for encontrado
         contatos: List[Contato] = []
     except ValidationError as e:
-        for erro in e.errors():
-            campo = erro['loc'][0]
-            tipo = erro['type']
-            msg = GoogleTranslator(
-                source='auto', target='pt').translate(erro['msg'])
-            print(f"Erro no campo '{campo}': {msg}")
+        exibir_erros_validacao(e.errors())
 
     while True:
         print("\nMenu:")
@@ -331,14 +334,10 @@ def main() -> None:
                             input("Quantos contatos deseja gerar? ").strip())
                         contatos = gerar_contatos(
                             quantidade)  # Gera os contatos
+                        print(contatos)
                         print(f"{quantidade} contatos gerados com sucesso!")
                     except ValidationError as e:
-                        for erro in e.errors():
-                            campo = erro['loc'][0]
-                            tipo = erro['type']
-                            msg = GoogleTranslator(
-                                source='auto', target='pt').translate(erro['msg'])
-                            print(f"Erro no campo '{campo}': {msg}")
+                        exibir_erros_validacao(e.errors())
 
                 case 2:
                     try:
@@ -351,12 +350,7 @@ def main() -> None:
                         exibir_contatos(
                             f"Contatos filtrados por '{termo_busca}':", contatos_filtrados)
                     except ValidationError as e:
-                        for erro in e.errors():
-                            campo = erro['loc'][0]
-                            tipo = erro['type']
-                            msg = GoogleTranslator(
-                                source='auto', target='pt').translate(erro['msg'])
-                            print(f"Erro no campo '{campo}': {msg}")
+                        exibir_erros_validacao(e.errors())
 
                 case 3:
                     try:
@@ -364,24 +358,14 @@ def main() -> None:
                             contatos)  # Ordena os contatos
                         exibir_contatos("Contatos Ordenados:", contatos)
                     except ValidationError as e:
-                        for erro in e.errors():
-                            campo = erro['loc'][0]
-                            tipo = erro['type']
-                            msg = GoogleTranslator(
-                                source='auto', target='pt').translate(erro['msg'])
-                            print(f"Erro no campo '{campo}': {msg}")
+                        exibir_erros_validacao(e.errors())
 
                 case 4:
                     if contatos:
                         try:
                             exibir_contatos("Contatos Gerados:", contatos)
                         except ValidationError as e:
-                            for erro in e.errors():
-                                campo = erro['loc'][0]
-                                tipo = erro['type']
-                                msg = GoogleTranslator(
-                                    source='auto', target='pt').translate(erro['msg'])
-                                print(f"Erro no campo '{campo}': {msg}")
+                            exibir_erros_validacao(e.errors())
                     else:
                         print(
                             "Nenhum contato gerado. Por favor, gere contatos primeiro.")
@@ -391,20 +375,14 @@ def main() -> None:
                         # Exporta para JSON
                         exportar_para_json(contatos)
                     except ValidationError as e:
-                        for erro in e.errors():
-                            campo = erro['loc'][0]
-                            tipo = erro['type']
-                            msg = GoogleTranslator(
-                                source='auto', target='pt').translate(erro['msg'])
-                            print(f"Erro no campo '{campo}': {msg}")
+                        exibir_erros_validacao(e.errors())
 
                 case 6:
                     try:
                         # Carrega os contatos do JSON
                         objetos_json: List[Contato] = carregar_json()
-                        print("Contatos carregados do JSON:")
-                        list(map(lambda contato: print(
-                            f"ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}"), objetos_json))
+                        exibir_contatos(
+                            "Contatos carregados do JSON:", objetos_json)
                     except FileNotFoundError:
                         print(
                             "Arquivo não encontrado. Verifique o caminho e tente novamente.")
@@ -420,13 +398,7 @@ def main() -> None:
                         print(
                             f"Contato '{deletar_usuario}' deletado com sucesso!")
                     except ValidationError as e:
-                        for erro in e.errors():
-                            campo = erro['loc'][0]
-                            tipo = erro['type']
-                            msg = GoogleTranslator(
-                                source='auto', target='pt').translate(erro['msg'])
-                            print(f"Erro no campo '{campo}': {msg}")
-
+                        exibir_erros_validacao(e.errors())
                 case 8:
                     print("Saindo...")
                     break  # Sai do loop e encerra o programa
