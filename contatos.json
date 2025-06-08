@@ -1,10 +1,5 @@
 [
     {
-        "id": "25826d0e-975c-4e57-90f9-34bcb9774ecd",
-        "nome": "Ana Silva",
-        "email": "ana.silva@hotmail.com"
-    },
-    {
         "id": "441f6559-4b63-4d78-a629-8c24f3a24a64",
         "nome": "Carla Pereira",
         "email": "carla.pereira@gmail.com"
@@ -13,16 +8,6 @@
         "id": "6e5e36a2-6f93-4315-a451-e51bf0cb70fe",
         "nome": "Fernanda Lima",
         "email": "fernanda.lima@gmail.com"
-    },
-    {
-        "id": "4092e4b6-51a5-43c5-a911-355c1600be1e",
-        "nome": "João Santos",
-        "email": "joão.santos@gmail.com"
-    },
-    {
-        "id": "90ddb6b9-70d6-41b6-abfd-8f569ede8fda",
-        "nome": "João Santos",
-        "email": "joão.santos@outlook.com"
     },
     {
         "id": "743fd8af-c26c-44db-ad3d-13355255fc85",

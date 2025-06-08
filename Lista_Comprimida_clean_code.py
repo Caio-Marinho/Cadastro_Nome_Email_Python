@@ -4,7 +4,7 @@ import json
 from uuid import uuid4
 from deep_translator import GoogleTranslator
 from pathlib import Path
-from typing import List, Set, Dict, Union
+from typing import List, Set, Dict, Union,Tuple
 from pydantic import BaseModel, Field, EmailStr, StrictStr, field_validator, ValidationError, validate_call
 
 # Constantes de Domínios e Caminho do Arquivo e Nomes
@@ -178,7 +178,7 @@ def deletar_usuario_por_email(contatos: List[Contato], nome: str, email: EmailSt
     return contatos
 
 @validate_call
-def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato]:
+def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> Tuple[List[Contato],int] :
     """
     Remove um contato da lista com base no nome e, se necessário, no e-mail.
 
@@ -195,12 +195,12 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato
     # Se não encontrar nenhum contato com esse nome
     if not encontrados:
         print("Nenhum contato encontrado com esse nome.")
-        return contatos
+        return contatos,0
 
     # Se houver exatamente um contato com esse nome, remove diretamente
     if len(encontrados) == 1:
         contatos.remove(encontrados[0])  # Remove o único contato encontrado
-        return contatos
+        return contatos,1
     
     # Se houver mais de um contato com o mesmo nome
     print("Mais de um contato encontrado com esse nome.")
@@ -414,7 +414,7 @@ def main() -> None:
                             contatos = deletar_usuario_por_email(contatos,deletar_usuario,email)
                         exportar_para_json(contatos)
                         print(
-                            f"Contato '{deletar_usuario}' deletado com sucesso!")
+                            f"Contato '{deletar_usuario}' deletado com sucesso!" if tamanho >= 1 else '',end='')
                     except ValidationError as e:
                         exibir_erros_validacao(e.errors())
                 case 8:
