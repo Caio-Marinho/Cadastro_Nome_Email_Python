@@ -150,6 +150,32 @@ def filtrar_por_nome(contatos: List[Contato], termo: str) -> List[Contato]:
     """
     return list(filter(lambda contato: termo.lower() in contato.nome.lower(), contatos))  # Filtra contatos por nome
 
+@validate_call
+def deletar_usuario_por_email(contatos: List[Contato], nome: str, email: EmailStr) -> List[Contato]:
+    """
+    Remove contato buscando pelo email do contado.
+
+    Parâmentro:
+    - Contatos: Lista de objetos `Contato` onde o contato será removido.
+    - email: Email do contato a ser removido
+
+    Retorna:
+    - A lista de contatos atualizada, com o contato removido, se encontrado.
+    """
+    # Filtra os contatos cujo nome contenha o texto informado
+    encontrados: List[Contato] = filtrar_por_nome(contatos, nome)
+    
+    # Procura o contato com o e-mail informado
+    contato_para_remover: Contato | None = next(
+        (contato for contato in encontrados if contato.email.lower() == email.lower()), None)
+
+    # Se encontrar o contato com o e-mail informado, remove da lista
+    if contato_para_remover:
+        contatos.remove(contato_para_remover)
+    else:
+        print("Nenhum contato encontrado com esse e-mail.")
+
+    return contatos
 
 @validate_call
 def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato]:
@@ -175,28 +201,14 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> List[Contato
     if len(encontrados) == 1:
         contatos.remove(encontrados[0])  # Remove o único contato encontrado
         return contatos
-
+    
     # Se houver mais de um contato com o mesmo nome
     print("Mais de um contato encontrado com esse nome.")
-    for indice, contato in enumerate(encontrados, start=1):
+    for indice, contato in enumerate(encontrados, start=1): 
         print(
             f"{indice} - ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}")
 
-    # Solicita ao usuário o e-mail para identificar qual contato remover
-    email = input(
-        "Digite o e-mail exato do contato que deseja remover: ").strip().lower()
-
-    # Procura o contato com o e-mail informado
-    contato_para_remover: Contato | None = next(
-        (contato for contato in encontrados if contato.email.lower() == email), None)
-
-    # Se encontrar o contato com o e-mail informado, remove da lista
-    if contato_para_remover:
-        contatos.remove(contato_para_remover)
-    else:
-        print("Nenhum contato encontrado com esse e-mail.")
-
-    return contatos  # Retorna a lista de contatos atualizada
+    return contatos,len(encontrados)  # Retorna a lista de contatos atualizada e o qtd de itens
 
 
 @validate_call
@@ -394,9 +406,12 @@ def main() -> None:
                     try:
                         deletar_usuario = input(
                             "Informe o contato que deseja deletar: ")
-                        contatos = deletar_usuario_por_nome(
+                        contatos,tamanho = deletar_usuario_por_nome(
                             contatos, deletar_usuario)  # Deleta o contato
                         # Atualiza o arquivo JSON
+                        if tamanho > 1:
+                            email = input("Informe o email mdo usuario que deseja apagar: ")
+                            contatos = deletar_usuario_por_email(contatos,deletar_usuario,email)
                         exportar_para_json(contatos)
                         print(
                             f"Contato '{deletar_usuario}' deletado com sucesso!")

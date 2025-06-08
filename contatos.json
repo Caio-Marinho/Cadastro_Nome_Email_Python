@@ -1,52 +1,47 @@
 [
     {
-        "id": "e4f70c4f-461b-4a79-920c-e46b69b22d7a",
-        "nome": "João Santos",
-        "email": "joão.santos@hotmail.com"
+        "id": "25826d0e-975c-4e57-90f9-34bcb9774ecd",
+        "nome": "Ana Silva",
+        "email": "ana.silva@hotmail.com"
     },
     {
-        "id": "cd61e315-d5ca-42bf-a450-122ab8d6a6b4",
+        "id": "441f6559-4b63-4d78-a629-8c24f3a24a64",
         "nome": "Carla Pereira",
-        "email": "carla.pereira@hotmail.com"
+        "email": "carla.pereira@gmail.com"
     },
     {
-        "id": "1eebb2d6-d853-4e14-a29b-d02be464c524",
-        "nome": "Ana Silva",
-        "email": "ana.silva@gmail.com"
-    },
-    {
-        "id": "a74c7801-38da-412b-ac13-5a348f376696",
-        "nome": "Ana Silva",
-        "email": "ana.silva@gmail.com"
-    },
-    {
-        "id": "970c2f9e-e7ad-45e2-8003-c8f801b2477a",
+        "id": "6e5e36a2-6f93-4315-a451-e51bf0cb70fe",
         "nome": "Fernanda Lima",
-        "email": "fernanda.lima@yahoo.com.br"
+        "email": "fernanda.lima@gmail.com"
     },
     {
-        "id": "870eba07-6cee-4503-a289-54ff373c1aec",
+        "id": "4092e4b6-51a5-43c5-a911-355c1600be1e",
+        "nome": "João Santos",
+        "email": "joão.santos@gmail.com"
+    },
+    {
+        "id": "90ddb6b9-70d6-41b6-abfd-8f569ede8fda",
+        "nome": "João Santos",
+        "email": "joão.santos@outlook.com"
+    },
+    {
+        "id": "743fd8af-c26c-44db-ad3d-13355255fc85",
+        "nome": "Juliana Gomes",
+        "email": "juliana.gomes@yahoo.com.br"
+    },
+    {
+        "id": "07378f94-43e9-4579-8b63-77a17b66083d",
         "nome": "Maria Oliveira",
         "email": "maria.oliveira@gmail.com"
     },
     {
-        "id": "d9fd180d-0587-4bfd-9499-7aeb034216e0",
+        "id": "07767213-41c7-4bd6-8349-606afe4a4e3b",
         "nome": "Pedro Souza",
         "email": "pedro.souza@gmail.com"
     },
     {
-        "id": "0957e89e-e894-471c-9dc1-949d8051b017",
-        "nome": "Pedro Souza",
-        "email": "pedro.souza@yahoo.com.br"
-    },
-    {
-        "id": "e51f3254-eb3e-493a-b5f1-8fbd6a097d96",
-        "nome": "Carla Pereira",
-        "email": "carla.pereira@yahoo.com.br"
-    },
-    {
-        "id": "848ca84e-a261-41b0-9eb7-0e14073e3b94",
-        "nome": "Bruno Fernandes",
-        "email": "bruno.fernandes@gmail.com"
+        "id": "88896125-2eac-47d1-8938-63e08b88d483",
+        "nome": "Ricardo Costa",
+        "email": "ricardo.costa@outlook.com"
     }
 ]
