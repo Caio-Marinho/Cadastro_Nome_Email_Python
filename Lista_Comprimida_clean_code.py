@@ -49,21 +49,48 @@ class Contato(BaseModel):
         return email
 
 
-"""class DicionarioComoObjeto:
+from typing import Any, Dict, Union
 
-    Converte um dicionário em um objeto acessível por atributos com ponto.
+class DicionarioComoObjeto:
+    """
+    Converte um dicionário (inclusive aninhado) em um objeto acessível por atributos com ponto.
 
     Exemplo:
-        obj = DicionarioComoObjeto({"nome": "Ana", "email": "ana@gmail.com"})
-        print(obj.nome)  # Ana
+        dados = {
+            "nome": "Ana",
+            "email": "ana@gmail.com",
+            "endereco": {
+                "rua": "Av. Principal",
+                "numero": 123
+            },
+            "contatos": [
+                {"tipo": "telefone", "valor": "9999-9999"},
+                {"tipo": "email", "valor": "ana@gmail.com"}
+            ]
+        }
+        obj = DicionarioComoObjeto(dados)
+        print(obj.endereco.rua)  # Av. Principal
+        print(obj.contatos[0].tipo)  # telefone
+    """
 
-    Parâmetros:
-    - dados: Dicionário com chaves como 'nome' e 'email'.
+    def __init__(self, dados: Union[Dict, list]) -> None:
+        if isinstance(dados, dict):
+            for chave, valor in dados.items():
+                chave_valida = f"{chave}_" if chave in dir(self) else chave
+                setattr(self, chave_valida, self._converter(valor))
+        elif isinstance(dados, list):
+            # Caso inicialize com uma lista (ex: [dicionario1, dicionario2])
+            raise TypeError("Inicialização direta com lista não é suportada. Use dentro de um dicionário.")
+        else:
+            raise TypeError(f"Tipo não suportado: {type(dados).__name__}")
 
-    def __init__(self, dados: Dict[str, str]) -> None:
-        # Itera sobre o dicionário e cria atributos no objeto com base nas chaves
-        for chave, valor in dados.items():
-            setattr(self, chave, valor)"""
+    def _converter(self, valor: Any) -> Any:
+        if isinstance(valor, dict):
+            return DicionarioComoObjeto(valor)
+        elif isinstance(valor, list):
+            return [self._converter(item) for item in valor]
+        return valor
+
 
 
 @validate_call
@@ -255,9 +282,9 @@ def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path, str
     Retorna:
     - None
     """
-    contatos_dict: List[Dict[str, str]] = [contato.model_dump(
+    contatos_dict: List[Dict[str, str]] = [{"contato":contato.model_dump(
         # Converte os contatos para dicionários
-        by_alias=False) for contato in contatos]
+        by_alias=False)} for contato in contatos]
 
     with open(caminho_arquivo, 'w', encoding='utf-8') as arquivo:
         json.dump(contatos_dict, arquivo, ensure_ascii=False,
@@ -288,7 +315,8 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
         dados: List[Dict[str, str]] = json.load(
             arquivo)  # Carrega os dados do arquivo JSON
         # Converte os dados para objetos
-        return [Contato(**dado) for dado in dados]
+        contatos = [DicionarioComoObjeto(dado) for dado in dados]
+        return [Contato(nome=dado.contato.nome,email=dado.contato.email) for dado in contatos]
 
 
 def exibir_erros_validacao(erros) -> None:
