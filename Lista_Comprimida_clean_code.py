@@ -51,7 +51,7 @@ class Contato(BaseModel):
 
 from typing import Any, Dict, Union
 
-class DicionarioComoObjeto:
+class Objeto:
     """
     Converte um dicionário (inclusive aninhado) em um objeto acessível por atributos com ponto.
 
@@ -68,7 +68,7 @@ class DicionarioComoObjeto:
                 {"tipo": "email", "valor": "ana@gmail.com"}
             ]
         }
-        obj = DicionarioComoObjeto(dados)
+        obj = Objeto(dados)
         print(obj.endereco.rua)  # Av. Principal
         print(obj.contatos[0].tipo)  # telefone
     """
@@ -315,7 +315,7 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
         dados: List[Dict[str, str]] = json.load(
             arquivo)  # Carrega os dados do arquivo JSON
         # Converte os dados para objetos
-        contatos = [DicionarioComoObjeto(dado) for dado in dados]
+        contatos = [Objeto(dado) for dado in dados]
         return [Contato(nome=dado.contato.nome,email=dado.contato.email) for dado in contatos]
 
 
