@@ -48,9 +48,6 @@ class Contato(BaseModel):
                 f"Domínio do e-mail '{dominio}' não é permitido. Permitidos: {', '.join(DOMINIOS_VALIDOS)}.")
         return email
 
-
-from typing import Any, Dict, Union
-
 class Objeto:
     """
     Converte um dicionário (inclusive aninhado) em um objeto acessível por atributos com ponto.
