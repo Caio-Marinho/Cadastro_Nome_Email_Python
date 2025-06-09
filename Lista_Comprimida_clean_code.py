@@ -86,7 +86,7 @@ class Objeto:
 
     def _converter(self, valor: Any) -> Any:
         if isinstance(valor, dict):
-            return DicionarioComoObjeto(valor)
+            return Objeto(valor)
         elif isinstance(valor, list):
             return [self._converter(item) for item in valor]
         return valor
