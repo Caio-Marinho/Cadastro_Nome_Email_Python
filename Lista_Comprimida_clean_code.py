@@ -4,7 +4,7 @@ import json
 from uuid import uuid4
 from deep_translator import GoogleTranslator
 from pathlib import Path
-from typing import List, Set, Dict, Union,Tuple
+from typing import List, Set, Dict, Union, Tuple
 from pydantic import BaseModel, Field, EmailStr, StrictStr, field_validator, ValidationError, validate_call
 
 # Constantes de Domínios e Caminho do Arquivo e Nomes
@@ -39,7 +39,6 @@ class Contato(BaseModel):
     def __init__(self, **data):
         super().__init__(**data)
 
-
     @field_validator("email", mode="after")
     def validar_email(cls, email: EmailStr):
         dominio = email.split('@')[-1]
@@ -47,6 +46,7 @@ class Contato(BaseModel):
             raise ValueError(
                 f"Domínio do e-mail '{dominio}' não é permitido. Permitidos: {', '.join(DOMINIOS_VALIDOS)}.")
         return email
+
 
 class Objeto:
     """
@@ -77,7 +77,8 @@ class Objeto:
                 setattr(self, chave_valida, self._converter(valor))
         elif isinstance(dados, list):
             # Caso inicialize com uma lista (ex: [dicionario1, dicionario2])
-            raise TypeError("Inicialização direta com lista não é suportada. Use dentro de um dicionário.")
+            raise TypeError(
+                "Inicialização direta com lista não é suportada. Use dentro de um dicionário.")
         else:
             raise TypeError(f"Tipo não suportado: {type(dados).__name__}")
 
@@ -87,7 +88,6 @@ class Objeto:
         elif isinstance(valor, list):
             return [self._converter(item) for item in valor]
         return valor
-
 
 
 @validate_call
@@ -174,13 +174,15 @@ def filtrar_por_nome(contatos: List[Contato], termo: str) -> List[Contato]:
     """
     return list(filter(lambda contato: termo.lower() in contato.nome.lower(), contatos))  # Filtra contatos por nome
 
+
 @validate_call
 def deletar_usuario_por_email(contatos: List[Contato], nome: str, email: EmailStr) -> List[Contato]:
     """
     Remove contato buscando pelo email do contado.
 
     Parâmentro:
-    - Contatos: Lista de objetos `Contato` onde o contato será removido.
+    - contatos: Lista de objetos `Contato` onde o contato será removido.
+    - nome: Nome do contato a ser removido.
     - email: Email do contato a ser removido
 
     Retorna:
@@ -188,7 +190,7 @@ def deletar_usuario_por_email(contatos: List[Contato], nome: str, email: EmailSt
     """
     # Filtra os contatos cujo nome contenha o texto informado
     encontrados: List[Contato] = filtrar_por_nome(contatos, nome)
-    
+
     # Procura o contato com o e-mail informado
     contato_para_remover: Contato | None = next(
         (contato for contato in encontrados if contato.email.lower() == email.lower()), None)
@@ -201,8 +203,9 @@ def deletar_usuario_por_email(contatos: List[Contato], nome: str, email: EmailSt
 
     return contatos
 
+
 @validate_call
-def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> Tuple[List[Contato],int] :
+def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> Tuple[List[Contato], int]:
     """
     Remove um contato da lista com base no nome e, se necessário, no e-mail.
 
@@ -219,20 +222,21 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> Tuple[List[C
     # Se não encontrar nenhum contato com esse nome
     if not encontrados:
         print("Nenhum contato encontrado com esse nome.")
-        return contatos,0
+        return contatos, 0
 
     # Se houver exatamente um contato com esse nome, remove diretamente
     if len(encontrados) == 1:
         contatos.remove(encontrados[0])  # Remove o único contato encontrado
-        return contatos,1
-    
+        return contatos, 1
+
     # Se houver mais de um contato com o mesmo nome
     print("Mais de um contato encontrado com esse nome.")
-    for indice, contato in enumerate(encontrados, start=1): 
+    for indice, contato in enumerate(encontrados, start=1):
         print(
             f"{indice} - ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}")
 
-    return contatos,len(encontrados)  # Retorna a lista de contatos atualizada e o qtd de itens
+    # Retorna a lista de contatos atualizada e o qtd de itens
+    return contatos, len(encontrados)
 
 
 @validate_call
@@ -279,7 +283,7 @@ def exportar_para_json(contatos: List[Contato], caminho_arquivo: Union[Path, str
     Retorna:
     - None
     """
-    contatos_dict: List[Dict[str, str]] = [{"contato":contato.model_dump(
+    contatos_dict: List[Dict[str, str]] = [{"contato": contato.model_dump(
         # Converte os contatos para dicionários
         by_alias=False)} for contato in contatos]
 
@@ -305,7 +309,7 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
     - FileNotFoundError: Se o arquivo não existir.
     - ValidationError: Se os dados JSON não corresponderem ao modelo `Contato`.
     """
-    if os.path.getsize(caminho_arquivo) == 0:
+    if not caminho_arquivo.exists():
         # Arquivo vazio: retorna lista vazia ou trata como quiser
         return []
     with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
@@ -313,7 +317,7 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
             arquivo)  # Carrega os dados do arquivo JSON
         # Converte os dados para objetos
         contatos = [Objeto(dado) for dado in dados]
-        return [Contato(nome=dado.contato.nome,email=dado.contato.email) for dado in contatos]
+        return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos]
 
 
 def exibir_erros_validacao(erros) -> None:
@@ -330,7 +334,8 @@ def exibir_erros_validacao(erros) -> None:
         campo = erro['loc'][0]
         msg = GoogleTranslator(
             source='auto', target='pt').translate(erro['msg'])
-        print(f"Erro no campo '{campo}': {','.join(msg.split(',')[1:]) if ',' in msg else msg}")
+        print(
+            f"Erro no campo '{campo}': {','.join(msg.split(',')[1:]) if ',' in msg else msg}")
 
 
 def main() -> None:
@@ -431,15 +436,17 @@ def main() -> None:
                     try:
                         deletar_usuario = input(
                             "Informe o contato que deseja deletar: ")
-                        contatos,tamanho = deletar_usuario_por_nome(
+                        contatos, tamanho = deletar_usuario_por_nome(
                             contatos, deletar_usuario)  # Deleta o contato
                         # Atualiza o arquivo JSON
                         if tamanho > 1:
-                            email = input("Informe o email mdo usuario que deseja apagar: ")
-                            contatos = deletar_usuario_por_email(contatos,deletar_usuario,email)
+                            email = input(
+                                "Informe o email mdo usuario que deseja apagar: ")
+                            contatos = deletar_usuario_por_email(
+                                contatos, deletar_usuario, email)
                         exportar_para_json(contatos)
                         print(
-                            f"Contato '{deletar_usuario}' deletado com sucesso!" if tamanho >= 1 else '',end='')
+                            f"Contato '{deletar_usuario}' deletado com sucesso!" if tamanho >= 1 else '', end='')
                     except ValidationError as e:
                         exibir_erros_validacao(e.errors())
                 case 8:
