@@ -4,7 +4,7 @@ import json
 from uuid import uuid4
 from deep_translator import GoogleTranslator
 from pathlib import Path
-from typing import List, Set, Dict, Union, Tuple
+from typing import List, Set, Dict, Union, Tuple,Any
 from pydantic import BaseModel, Field, EmailStr, StrictStr, field_validator, ValidationError, validate_call
 
 # Constantes de Domínios e Caminho do Arquivo e Nomes
