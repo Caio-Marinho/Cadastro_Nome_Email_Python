@@ -237,6 +237,30 @@ def deletar_usuario_por_nome(contatos: List[Contato], nome: str) -> Tuple[List[C
     # Retorna a lista de contatos atualizada e o qtd de itens
     return contatos, len(encontrados)
 
+@validate_call
+def atualizar_usuario_por_nome(contatos:List[Contato],nome:str) -> List[Contato]:
+    """
+    Atualiza um contato da lista com base no nome.
+    
+    Parêmetro:
+    - contatos: Lista de objetos `Contato` onde o contato será atualizado.
+    - nome: Nome do contato a ser atualizado.
+
+     Retorna:
+    - A lista de contatos atualizada.
+    """
+    # Filtra os contatos cujo nome contenha o texto informado
+    encontrados: List[Contato] = filtrar_por_nome(contatos, nome)
+    # Se não encontrar nenhum contato com esse nome
+    if not encontrados:
+        print("Nenhum contato encontrado com esse nome.")
+        return contatos
+    # Se houver exatamente um contato com esse nome, atualiza diretamente
+    if len(encontrados) == 1:
+        contato = encontrados[0]
+    
+    return contatos
+    
 
 @validate_call
 def ordenar_por_nome(contatos: List[Contato]) -> List[Contato]:
