@@ -540,7 +540,8 @@ def main() -> None:
                                 "Informe o email mdo usuario que deseja atualizar: ")
                             contatos = atualizar_usuario_por_email(
                                 contatos, contato_atualizado, email_antigo, novo_nome, novo_email)
-                        print(f"O contato '{contato_atualizado}' foi atualizado com sucesso!" if tamanho>= 1 else '', end='')
+                        print(
+                            f"O contato '{contato_atualizado}' foi atualizado com sucesso!" if tamanho >= 1 else '', end='')
                         exportar_para_json(contatos)
                     except ValidationError as e:
                         exibir_erros_validacao(e.errors())
