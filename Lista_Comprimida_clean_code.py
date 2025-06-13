@@ -260,7 +260,7 @@ def atualizar_usuario_por_nome(contatos: List[Contato], nome_antigo: str, novo_n
         return contatos, 0
     # Se houver exatamente um contato com esse nome, atualiza diretamente
     if len(encontrados) == 1:
-        contato:Contato = encontrados[0]
+        contato: Contato = encontrados[0]
         # Cria um novo contato validando os dados atualizados
         novo_contato = Contato(
             id=contato.id, nome=novo_nome, email=novo_email)
@@ -269,16 +269,18 @@ def atualizar_usuario_por_nome(contatos: List[Contato], nome_antigo: str, novo_n
         contatos[index] = novo_contato
         print("Contato atualizado com sucesso.")
         # Atualiza o contato encontrado
-        return contatos,1
-    
+        return contatos, 1
+
     print("Foi encotrado mais de um contato com esse nome.")
     for indice, contato in enumerate(encontrados, start=1):
-        print(f"{indice} - ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}")
+        print(
+            f"{indice} - ID: {contato.id} | Nome: {contato.nome} | Email: {contato.email}")
 
     # Retorna a lista de contatos sem alterações caso não haja apenas um contato com o nome informado
-    return contatos,len(encontrados)
+    return contatos, len(encontrados)
 
-def atualizar_usuario_por_email(contatos:List[Contato],nome_antigo:str, email_antigo:str, novo_nome:str, novo_email:str)  -> List[Contato]:
+
+def atualizar_usuario_por_email(contatos: List[Contato], nome_antigo: str, email_antigo: str, novo_nome: str, novo_email: str) -> List[Contato]:
     """
     Atualiza um contato da lista com base no nome e email.
 
@@ -293,13 +295,13 @@ def atualizar_usuario_por_email(contatos:List[Contato],nome_antigo:str, email_an
     """
     # Filtra os contatos cujo nome contenha o texto informado
     encontrados: List[Contato] = filtrar_por_nome(contatos, nome_antigo)
-    
+
     # Procura o contato com o e-mail informado
     contato_para_atualizar: Contato | None = next(
         (contato for contato in encontrados if contato.email.lower() == email_antigo.lower()), None)
-    
+
     if contato_para_atualizar:
-        contato = contato_para_atualizar[0]
+        contato = contato_para_atualizar
         # Cria um novo contato validando os dados atualizados
         novo_contato = Contato(
             id=contato.id, nome=novo_nome, email=novo_email)
@@ -309,11 +311,9 @@ def atualizar_usuario_por_email(contatos:List[Contato],nome_antigo:str, email_an
         print("Contato atualizado com sucesso.")
     else:
         print("Nenhum contato encontrado com esse e-mail.")
-    
-    return contatos
-    
 
-    
+    return contatos
+
 
 @validate_call
 def ordenar_por_nome(contatos: List[Contato]) -> List[Contato]:
@@ -533,10 +533,15 @@ def main() -> None:
                             "Informe o contato que deseja atualizar: ")
                         novo_nome = input("Novo nome: ")
                         novo_email = input("Novo email: ")
-                        contatos, tamanho = atualizar_usuario_por_nome(contatos, contato_atualizado,novo_nome,novo_email)
+                        contatos, tamanho = atualizar_usuario_por_nome(
+                            contatos, contato_atualizado, novo_nome, novo_email)
                         if tamanho > 1:
-                            email_antigo = input("Informe o email mdo usuario que deseja apagar: ")
-                            contatos = deletar_usuario_por_email(contatos,contato_atualizado, email_antigo, novo_nome, novo_email)
+                            email_antigo = input(
+                                "Informe o email mdo usuario que deseja atualizar: ")
+                            contatos = atualizar_usuario_por_email(
+                                contatos, contato_atualizado, email_antigo, novo_nome, novo_email)
+                        print(contatos)
+                        exportar_para_json(contatos)
                     except ValidationError as e:
                         exibir_erros_validacao(e.errors())
                 case 9:
