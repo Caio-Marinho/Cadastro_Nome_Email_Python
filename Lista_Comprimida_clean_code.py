@@ -396,7 +396,7 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
         return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos]
 
 @validate_call
-def exibir_erros_validacao(erros:ValidationError) -> None:
+def exibir_erros_validacao(erros) -> None:
     """
     Procedimento responsavel por exibir a mensagem de erro do Pydantic
 
