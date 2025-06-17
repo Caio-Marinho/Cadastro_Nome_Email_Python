@@ -385,9 +385,6 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
     - FileNotFoundError: Se o arquivo não existir.
     - ValidationError: Se os dados JSON não corresponderem ao modelo `Contato`.
     """
-    if not caminho_arquivo.exists():
-        # Arquivo vazio: retorna lista vazia ou trata como quiser
-        return []
     with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
         dados: List[Dict[str, str]] = json.load(
             arquivo)  # Carrega os dados do arquivo JSON
