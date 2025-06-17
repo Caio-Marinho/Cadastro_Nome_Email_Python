@@ -76,8 +76,7 @@ class Objeto:
                 setattr(self, chave_valida, self._converter(valor))
         elif isinstance(dados, list):
             # Caso inicialize com uma lista (ex: [dicionario1, dicionario2])
-            raise TypeError(
-                "Inicialização direta com lista não é suportada. Use dentro de um dicionário.")
+            self.lista = [self._converter(item) for item in dados]
         else:
             raise TypeError(f"Tipo não suportado: {type(dados).__name__}")
 
@@ -87,6 +86,9 @@ class Objeto:
         elif isinstance(valor, list):
             return [self._converter(item) for item in valor]
         return valor
+
+    def __repr__(self) -> str:
+        return f"<Objeto {self.__dict__}>"
 
 
 @validate_call
@@ -389,8 +391,8 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
         dados: List[Dict[str, str]] = json.load(
             arquivo)  # Carrega os dados do arquivo JSON
         # Converte os dados para objetos
-        contatos = [Objeto(dado) for dado in dados]
-        return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos]
+        contatos = Objeto(dados)
+        return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos.lista]
 
 @validate_call
 def exibir_erros_validacao(erros) -> None:
