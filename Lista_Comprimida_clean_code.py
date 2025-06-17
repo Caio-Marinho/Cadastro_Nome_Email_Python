@@ -76,7 +76,7 @@ class Objeto:
                 setattr(self, chave_valida, self._converter(valor))
         elif isinstance(dados, list):
             # Caso inicialize com uma lista (ex: [dicionario1, dicionario2])
-            self.lista = [self._converter(item) for item in dados]
+            self.json = [self._converter(item) for item in dados]
         else:
             raise TypeError(f"Tipo não suportado: {type(dados).__name__}")
 
@@ -392,7 +392,7 @@ def carregar_json(caminho_arquivo: Union[Path, str] = CAMINHO_ARQUIVO) -> Union[
             arquivo)  # Carrega os dados do arquivo JSON
         # Converte os dados para objetos
         contatos = Objeto(dados)
-        return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos.lista]
+        return [Contato(nome=dado.contato.nome, email=dado.contato.email) for dado in contatos.json]
 
 @validate_call
 def exibir_erros_validacao(erros) -> None:
